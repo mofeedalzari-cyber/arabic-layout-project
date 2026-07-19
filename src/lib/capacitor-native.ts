@@ -41,7 +41,7 @@ export async function initCapacitorNative(router: Router<any, any>) {
 
     // Status bar
     try {
-      await StatusBar.setOverlaysWebView({ overlay: true });
+      await StatusBar.setOverlaysWebView({ overlay: false });
       await StatusBar.setBackgroundColor({ color: "#009688" });
       await StatusBar.setStyle({ style: Style.Light });
     } catch {}

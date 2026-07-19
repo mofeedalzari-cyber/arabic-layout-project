@@ -39,7 +39,7 @@ const config: CapacitorConfig = {
     StatusBar: {
       backgroundColor: "#009688",
       style: "LIGHT",
-      overlaysWebView: true,
+      overlaysWebView: false,
     },
     App: {
       launchUrl: "https://arabic-layout-project.onrender.com",
