@@ -133,14 +133,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div
-          className="flex min-h-dvh flex-col"
-          style={{
-            boxSizing: "border-box",
-            paddingTop: "var(--app-safe-top)",
-            paddingBottom: "var(--app-safe-bottom)",
-          }}
-        >
+        <div className="flex min-h-dvh flex-col">
           <OfflineBanner />
           <Outlet />
           <SiteFooter />

@@ -33,22 +33,17 @@ export async function initCapacitorNative(router: Router<any, any>) {
   initialized = true;
 
   if (!isNative()) return;
-  document.documentElement.classList.add("capacitor-native");
 
   try {
-    const { SystemBars, SystemBarsStyle } = await import("@capacitor/core");
     const { SplashScreen } = await import("@capacitor/splash-screen");
     const { StatusBar, Style } = await import("@capacitor/status-bar");
     const { App } = await import("@capacitor/app");
 
     // Status bar
     try {
-      await SystemBars.show();
-      await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
-      await StatusBar.show();
-      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setOverlaysWebView({ overlay: true });
       await StatusBar.setBackgroundColor({ color: "#009688" });
-      await StatusBar.setStyle({ style: Style.Dark });
+      await StatusBar.setStyle({ style: Style.Light });
     } catch {}
 
     // Hide splash after the app is ready

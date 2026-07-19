@@ -57,43 +57,18 @@ interface SheetContentProps
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, style, ...props }, ref) => {
-  const safeAreaStyle: React.CSSProperties = {
-    ...(side === "left" || side === "right"
-      ? {
-          paddingTop: "calc(var(--app-safe-top) + 1.5rem)",
-          paddingBottom: "calc(var(--app-safe-bottom) + 1.5rem)",
-        }
-      : {}),
-    ...(side === "top" ? { paddingTop: "calc(var(--app-safe-top) + 1.5rem)" } : {}),
-    ...(side === "bottom" ? { paddingBottom: "calc(var(--app-safe-bottom) + 1.5rem)" } : {}),
-    ...style,
-  };
-
-  return (
-    <SheetPortal>
-      <SheetOverlay />
-      <SheetPrimitive.Content
-        ref={ref}
-        className={cn(sheetVariants({ side }), className)}
-        style={safeAreaStyle}
-        {...props}
-      >
-        <SheetPrimitive.Close
-          className="absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground opacity-90 shadow-sm ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
-          style={{
-            top: "calc(var(--app-safe-top) + 0.75rem)",
-            right: "max(0.75rem, var(--app-safe-right))",
-          }}
-        >
-          <X className="h-5 w-5" />
-          <span className="sr-only">Close</span>
-        </SheetPrimitive.Close>
-        {children}
-      </SheetPrimitive.Content>
-    </SheetPortal>
-  );
-});
+>(({ side = "right", className, children, ...props }, ref) => (
+  <SheetPortal>
+    <SheetOverlay />
+    <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background cursor-pointer transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </SheetPrimitive.Close>
+      {children}
+    </SheetPrimitive.Content>
+  </SheetPortal>
+));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

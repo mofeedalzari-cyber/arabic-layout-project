@@ -54,16 +54,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div
-      className="flex bg-background"
-      dir="rtl"
-      style={{ minHeight: "calc(100dvh - var(--app-safe-top) - var(--app-safe-bottom))" }}
-    >
-
-
+    <div className="min-h-dvh flex bg-background" dir="rtl">
       {/* Desktop sidebar (toggleable) */}
       {sidebarOpen && (
-        <aside className="hidden lg:flex w-64 shrink-0 flex-col border-l bg-sidebar text-sidebar-foreground">
+        <aside
+          className="hidden lg:flex w-64 shrink-0 flex-col border-l bg-sidebar text-sidebar-foreground"
+          style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
           <BrandHeader />
           <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
             {items.map((it) => <NavLink key={it.to} item={it} />)}
@@ -75,14 +72,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
         <header
-          className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b flex items-center justify-between px-4 h-14"
+          className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b flex items-center justify-between px-4"
           style={{
-            top: "var(--app-safe-top)",
-            paddingLeft: "max(1rem, var(--app-safe-left))",
-            paddingRight: "max(1rem, var(--app-safe-right))",
+            paddingTop: "env(safe-area-inset-top)",
+            paddingLeft: "max(1rem, env(safe-area-inset-left))",
+            paddingRight: "max(1rem, env(safe-area-inset-right))",
+            minHeight: "calc(3.5rem + env(safe-area-inset-top))",
           }}
         >
-
           <div className="flex items-center gap-2">
             {/* Desktop toggle */}
             <Button
@@ -99,18 +96,15 @@ export function AppShell({ children }: { children: ReactNode }) {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-72 p-0 bg-sidebar text-sidebar-foreground flex flex-col h-full"
-                style={{
-                  paddingTop: "var(--app-safe-top)",
-                  paddingBottom: "var(--app-safe-bottom)",
-                }}
+                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col h-full"
               >
-                <BrandHeader />
+                <div style={{ paddingTop: "env(safe-area-inset-top)" }} className="shrink-0">
+                  <BrandHeader />
+                </div>
                 <nav className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1">
                   {items.map((it) => <NavLink key={it.to} item={it} />)}
                 </nav>
-                <div className="shrink-0">
-
+                <div className="shrink-0" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
                   <UserFooter username={profile?.username ?? ""} role={role} onSignOut={signOut} dark={dark} onToggleTheme={toggleTheme} />
                 </div>
               </SheetContent>
@@ -126,10 +120,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </header>
 
         <main
-          className="flex-1 p-3 md:p-4 lg:p-6 pb-24 lg:pb-6 max-w-full overflow-x-hidden"
+          className="flex-1 p-3 md:p-4 lg:p-6 max-w-full overflow-x-hidden"
           style={{
-            paddingLeft: "max(0.75rem, var(--app-safe-left))",
-            paddingRight: "max(0.75rem, var(--app-safe-right))",
+            paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
+            paddingRight: "max(0.75rem, env(safe-area-inset-right))",
+            paddingBottom: "calc(6rem + env(safe-area-inset-bottom))",
           }}
         >
           <div className="mx-auto max-w-6xl fade-in">{children}</div>
@@ -138,7 +133,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Mobile bottom nav */}
         <nav
           className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur"
-          style={{ paddingBottom: "var(--app-safe-bottom)" }}
+          style={{
+            paddingBottom: "env(safe-area-inset-bottom)",
+            paddingLeft: "env(safe-area-inset-left)",
+            paddingRight: "env(safe-area-inset-right)",
+          }}
         >
           <div className="grid grid-cols-4 h-16">
             {items.slice(0, 4).map((it) => <BottomLink key={it.to} item={it} />)}
