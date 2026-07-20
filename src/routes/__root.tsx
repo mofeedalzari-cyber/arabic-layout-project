@@ -1,3 +1,7 @@
+// ============================================================
+// الملف الثالث: src/routes/__root.tsx (بدون حشوات زائدة)
+// ============================================================
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -113,8 +117,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      {/* 🔽 إضافة padding-bottom آمنة للجسم */}
-      <body style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <body>
         {children}
         <Scripts />
       </body>
@@ -126,8 +129,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const matches = useMatches();
-  // Hide the marketing footer inside /app on mobile — the bottom nav owns
-  // that region and stacking them causes overlap and wasted safe-area.
   const inApp = matches.some((m) => m.routeId?.startsWith("/app"));
 
   useEffect(() => {
@@ -139,16 +140,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {/* 🔽 إضافة padding-bottom آمنة للحاوية الرئيسية */}
-        <div
-          className="flex min-h-dvh flex-col"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-        >
+        <div className="flex min-h-dvh flex-col">
           <OfflineBanner />
           <Outlet />
           {!inApp && <SiteFooter />}
         </div>
-
         <Toaster position="top-center" richColors closeButton />
       </AuthProvider>
     </QueryClientProvider>
