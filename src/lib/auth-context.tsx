@@ -87,11 +87,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(() => ({
     user, session, profile, role, loading,
     signOut: async () => {
+<<<<<<< HEAD
       // Clear local state first so UI updates immediately
+=======
+      try { await supabase.auth.signOut(); } catch (e) { console.error(e); }
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       setSession(null);
       setUser(null);
       setProfile(null);
       setRole(null);
+<<<<<<< HEAD
       try {
         await supabase.auth.signOut({ scope: "local" });
       } catch (e) {
@@ -106,6 +111,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch {}
         // Hard reload to /auth so no cached protected state remains
         window.location.href = "/auth";
+=======
+      if (typeof window !== "undefined") {
+        window.location.replace("/auth");
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       }
     },
     refresh: async () => { if (user) await loadProfile(user.id); },

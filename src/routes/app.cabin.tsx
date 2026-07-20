@@ -394,6 +394,7 @@ function SaleReceipt({ sale }: { sale: any }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         <Button variant="outline" className="rounded-xl" onClick={() => copy(fullText, "البيانات")}><Copy className="h-4 w-4 ml-1" />نسخ</Button>
+<<<<<<< HEAD
         <Button variant="outline" className="rounded-xl" onClick={async () => {
           const { isNativeApp } = await import("@/lib/native-pdf");
           if (isNativeApp()) {
@@ -414,6 +415,11 @@ function SaleReceipt({ sale }: { sale: any }) {
           const { sharePdfOrPrint } = await import("@/lib/native-pdf");
           await sharePdfOrPrint({ html, filename: `فاتورة_${sale.transaction_no}`, dialogTitle: "طباعة أو مشاركة الفاتورة" });
         }}>طباعة</Button>
+=======
+        <Button variant="outline" className="rounded-xl" onClick={() => navigator.share ? navigator.share({ text: fullText }) : copy(fullText, "البيانات")}><Share2 className="h-4 w-4 ml-1" />مشاركة</Button>
+        <Button variant="outline" className="rounded-xl" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(fullText)}`, "_blank")}><MessageCircle className="h-4 w-4 ml-1" />واتساب</Button>
+        <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>طباعة</Button>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       </div>
     </div>
   );

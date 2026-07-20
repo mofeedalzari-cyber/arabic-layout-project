@@ -395,6 +395,7 @@ function SaleCard({ sale, currency, networkName }: { sale: any; currency: string
   }
   const fullText = `الشبكة: ${networkName}\nالباقة: ${sale.package_name}\nالمستخدم: ${sale.card_username}\n${sale.card_password ? `كلمة المرور: ${sale.card_password}\n` : ""}السعر: ${fmtMoney(Number(sale.price))} ${currency}\nرقم العملية: ${sale.transaction_no}`;
 
+<<<<<<< HEAD
   async function share() {
     // Native → share sheet (WhatsApp, Telegram, Gmail…). Web → navigator.share or copy.
     const { isNativeApp } = await import("@/lib/native-pdf");
@@ -420,6 +421,17 @@ function SaleCard({ sale, currency, networkName }: { sale: any; currency: string
     window.open(`https://wa.me/?text=${encodeURIComponent(fullText)}`, "_blank");
   }
   async function print() {
+=======
+  function share() {
+    if (navigator.share) navigator.share({ text: fullText }).catch(() => {});
+    else copy(fullText, "البيانات");
+  }
+  function whatsapp() {
+    window.open(`https://wa.me/?text=${encodeURIComponent(fullText)}`, "_blank");
+  }
+  function print() {
+    const w = window.open("", "_blank"); if (!w) return;
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
     const esc = (s: any) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
     const tx = esc(sale.transaction_no);
     const pkg = esc(sale.package_name);
@@ -427,9 +439,14 @@ function SaleCard({ sale, currency, networkName }: { sale: any; currency: string
     const user = esc(sale.card_username);
     const pass = sale.card_password ? esc(sale.card_password) : "";
     const price = esc(`${fmtMoney(Number(sale.price))} ${currency}`);
+<<<<<<< HEAD
     const html = `<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>${tx}</title><style>body{font-family:Cairo,sans-serif;padding:20px;text-align:center;background:#fff}.b{border:2px dashed #009688;border-radius:12px;padding:16px;margin:12px auto;max-width:320px}h1{color:#009688;margin:0 0 8px}.k{color:#666;font-size:12px}.v{font-weight:bold;font-size:18px;margin-bottom:8px}</style></head><body><div class="b"><h1>${net}</h1><div class="k">${pkg}</div><hr/><div class="k">اسم المستخدم</div><div class="v">${user}</div>${pass?`<div class="k">كلمة المرور</div><div class="v">${pass}</div>`:""}<div class="k">السعر</div><div class="v">${price}</div><div class="k" style="margin-top:8px">رقم العملية: ${tx}</div></div><script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;
     const { sharePdfOrPrint } = await import("@/lib/native-pdf");
     await sharePdfOrPrint({ html, filename: `فاتورة_${sale.transaction_no}`, dialogTitle: "طباعة أو مشاركة الفاتورة" });
+=======
+    w.document.write(`<html dir="rtl"><head><title>${tx}</title><style>body{font-family:Cairo,sans-serif;padding:20px;text-align:center}.b{border:2px dashed #009688;border-radius:12px;padding:16px;margin:12px auto;max-width:320px}h1{color:#009688;margin:0 0 8px}.k{color:#666;font-size:12px}.v{font-weight:bold;font-size:18px;margin-bottom:8px}</style></head><body><div class="b"><h1>${net}</h1><div class="k">${pkg}</div><hr/><div class="k">اسم المستخدم</div><div class="v">${user}</div>${pass?`<div class="k">كلمة المرور</div><div class="v">${pass}</div>`:""}<div class="k">السعر</div><div class="v">${price}</div><div class="k" style="margin-top:8px">رقم العملية: ${tx}</div></div><script>window.print()</script></body></html>`);
+    w.document.close();
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   }
 
   return (

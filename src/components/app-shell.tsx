@@ -1,8 +1,12 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+=======
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Wifi, Package, Upload, Users, Receipt,
@@ -42,7 +46,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", saved);
   }, []);
 
+<<<<<<< HEAD
   // Auto-close sidebars on route change
+=======
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   useEffect(() => {
     setSidebarOpen(false);
     setMobileOpen(false);
@@ -55,9 +62,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
+<<<<<<< HEAD
     <div className="min-h-dvh flex bg-background w-full max-w-full overflow-x-hidden" dir="rtl">
 
       {/* Desktop sidebar (toggleable) */}
+=======
+    <div className="min-h-dvh flex bg-background" dir="rtl">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       {sidebarOpen && (
         <aside
           className="hidden lg:flex w-64 shrink-0 flex-col border-l bg-sidebar text-sidebar-foreground"
@@ -71,6 +82,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </aside>
       )}
 
+<<<<<<< HEAD
       <div className="flex-1 flex flex-col min-w-0 max-w-full">
         {/* Top bar — يمتد خلف شريط الحالة على أندرويد ويستخدم safe-area-inset-top */}
         <header
@@ -84,6 +96,20 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex w-full items-center justify-between h-14">
           <div className="flex items-center gap-2">
             {/* Desktop toggle */}
+=======
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top bar */}
+        <header
+          className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b flex items-center justify-between px-4"
+          style={{
+            paddingTop: "env(safe-area-inset-top)",
+            paddingLeft: "max(1rem, env(safe-area-inset-left))",
+            paddingRight: "max(1rem, env(safe-area-inset-right))",
+            minHeight: "calc(3.5rem + env(safe-area-inset-top))",
+          }}
+        >
+          <div className="flex items-center gap-2">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
             <Button
               variant="ghost" size="icon" className="rounded-xl hidden lg:inline-flex"
               onClick={() => setSidebarOpen((v) => !v)}
@@ -91,6 +117,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <Menu className="h-5 w-5" />
             </Button>
+<<<<<<< HEAD
             {/* Mobile toggle */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -113,6 +140,31 @@ export function AppShell({ children }: { children: ReactNode }) {
                   {items.map((it) => <NavLink key={it.to} item={it} />)}
                 </nav>
                 <div className="shrink-0" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}>
+=======
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-xl lg:hidden"><Menu className="h-5 w-5" /></Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col"
+                style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
+              >
+                <div style={{ paddingTop: "env(safe-area-inset-top)" }} className="shrink-0">
+                  <BrandHeader />
+                </div>
+                <nav
+                  className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-3 space-y-1"
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    touchAction: "pan-y",
+                    overscrollBehavior: "contain",
+                  }}
+                >
+                  {items.map((it) => <NavLink key={it.to} item={it} />)}
+                </nav>
+                <div className="shrink-0" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
                   <UserFooter username={profile?.username ?? ""} role={role} onSignOut={signOut} dark={dark} onToggleTheme={toggleTheme} />
                 </div>
               </SheetContent>
@@ -120,6 +172,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <div className="flex items-center gap-2 font-bold">
             <div className="rounded-xl gradient-primary-bg p-1.5"><Wifi className="h-4 w-4" /></div>
+<<<<<<< HEAD
             <span className="truncate">كروت الواي فاي</span>
           </div>
           <Button variant="ghost" size="icon" className="rounded-xl" onClick={toggleTheme} aria-label="تبديل الوضع">
@@ -134,11 +187,29 @@ export function AppShell({ children }: { children: ReactNode }) {
             paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
             paddingRight: "max(0.75rem, env(safe-area-inset-right))",
             paddingBottom: "calc(6rem + env(safe-area-inset-bottom) + 20px)",
+=======
+            <span>كروت الواي فاي</span>
+          </div>
+          <Button variant="ghost" size="icon" className="rounded-xl" onClick={toggleTheme}>
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+        </header>
+
+        {/* المحتوى الرئيسي مع حشوة سفلية كبيرة لتجنب التداخل */}
+        <main
+          className="flex-1 p-3 md:p-4 lg:p-6 max-w-full"
+          style={{
+            paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
+            paddingRight: "max(0.75rem, env(safe-area-inset-right))",
+            // حشوة سفلية: 5rem (80px) + المسافة الآمنة + مسافة إضافية 0.5rem
+            paddingBottom: "calc(5.5rem + env(safe-area-inset-bottom))",
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
           }}
         >
           <div className="mx-auto max-w-6xl fade-in">{children}</div>
         </main>
 
+<<<<<<< HEAD
         {/* Mobile bottom nav — فوق شريط التنقل الخاص بالنظام */}
         <nav
           className="lg:hidden fixed inset-x-0 z-40 border-t bg-background/95 backdrop-blur rounded-t-2xl shadow-lg"
@@ -153,6 +224,23 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </nav>
 
+=======
+        {/* القائمة السفلية الثابتة مع حشوة سفلية إضافية */}
+        <nav
+          className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur"
+          style={{
+            paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
+            paddingLeft: "env(safe-area-inset-left)",
+            paddingRight: "env(safe-area-inset-right)",
+            height: "calc(4rem + env(safe-area-inset-bottom))",
+            minHeight: "calc(4rem + env(safe-area-inset-bottom))",
+          }}
+        >
+          <div className="grid grid-cols-4 h-full">
+            {items.slice(0, 4).map((it) => <BottomLink key={it.to} item={it} />)}
+          </div>
+        </nav>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       </div>
     </div>
   );

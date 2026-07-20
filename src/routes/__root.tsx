@@ -1,10 +1,20 @@
+<<<<<<< HEAD
+=======
+// ============================================================
+// الملف الثالث: src/routes/__root.tsx (بدون حشوات زائدة)
+// ============================================================
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+<<<<<<< HEAD
   useRouterState,
+=======
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -18,6 +28,10 @@ import "@fontsource/cairo/700.css";
 import "@fontsource/cairo/800.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/lib/auth-context";
+<<<<<<< HEAD
+=======
+import { useMatches } from "@tanstack/react-router";
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter } from "@/components/site-footer";
 import { OfflineBanner } from "@/components/offline-banner";
@@ -124,6 +138,11 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+<<<<<<< HEAD
+=======
+  const matches = useMatches();
+  const inApp = matches.some((m) => m.routeId?.startsWith("/app"));
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 
   useEffect(() => {
     initSentry();
@@ -131,6 +150,7 @@ function RootComponent() {
     initCapacitorNative(router);
   }, [router]);
 
+<<<<<<< HEAD
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const inApp = pathname.startsWith("/app");
   const isAuth = pathname.startsWith("/auth");
@@ -146,9 +166,22 @@ function RootComponent() {
           {!inApp && !isAuth && <SiteFooter />}
         </div>
 
+=======
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <div className="flex min-h-dvh flex-col">
+          <OfflineBanner />
+          <Outlet />
+          {!inApp && <SiteFooter />}
+        </div>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         <Toaster position="top-center" richColors closeButton />
       </AuthProvider>
     </QueryClientProvider>
   );
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a

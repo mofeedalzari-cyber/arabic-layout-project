@@ -40,13 +40,31 @@ export function clearTemplate(pkgId: string) {
   localStorage.removeItem(KEY(pkgId));
 }
 
+<<<<<<< HEAD
 export function printCards(opts: {
+=======
+function isCapacitorNative(): boolean {
+  if (typeof window === "undefined") return false;
+  // @ts-ignore
+  return !!(window as any).Capacitor?.isNativePlatform?.();
+}
+
+export async function printCards(opts: {
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   template: CardTemplate;
   codes: string[];
   title: string;
   autoPrint?: boolean;
 }) {
+<<<<<<< HEAD
   const { template, codes, title, autoPrint = true } = opts;
+=======
+  const native = isCapacitorNative();
+  // On native we want the user to see the print preview in Chrome and press
+  // the print button themselves, instead of jumping straight to the OS print
+  // dialog. So force autoPrint=false on native.
+  const { template, codes, title, autoPrint = !native } = opts;
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   const esc = (s: string) =>
     String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -130,8 +148,44 @@ export function printCards(opts: {
 </body>
 </html>`;
 
+<<<<<<< HEAD
   // Native → generate PDF + share sheet. Web → open print window.
   void import("./native-pdf").then(({ sharePdfOrPrint }) =>
     sharePdfOrPrint({ html, filename: title, dialogTitle: "طباعة أو مشاركة الكروت" }),
   );
+=======
+  // On native (Capacitor Android), open in the system browser (Chrome) via
+  // @capacitor/browser so the user sees the preview + toolbar and can print
+  // from Chrome's menu instead of firing the OS print dialog immediately.
+  if (native) {
+    try {
+      const { Browser } = await import("@capacitor/browser");
+      // Write the HTML to app cache and open it in Chrome Custom Tab.
+      // Blob/data URLs cannot cross app-process boundaries, so we persist
+      // to Filesystem and hand Chrome an http-served path via convertFileSrc
+      // is also cross-origin; instead, use the Capacitor Filesystem "External
+      // Cache" directory and share it via a content:// URI is not available
+      // without extra plugins. As a reliable fallback that works everywhere,
+      // encode the HTML as a base64 data URL — Chrome Custom Tabs opens
+      // these when launched programmatically.
+      const b64 = typeof btoa === "function"
+        ? btoa(unescape(encodeURIComponent(html)))
+        : Buffer.from(html, "utf-8").toString("base64");
+      const url = `data:text/html;charset=utf-8;base64,${b64}`;
+      await Browser.open({ url, presentationStyle: "fullscreen" });
+      return;
+    } catch (e) {
+      console.error("Browser.open failed, falling back to window.open", e);
+    }
+  }
+
+  const w = window.open("", "_blank");
+  if (!w) {
+    alert("يرجى السماح بالنوافذ المنبثقة للطباعة");
+    return;
+  }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 }

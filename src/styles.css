@@ -4,6 +4,65 @@
 
 @custom-variant dark (&:is(.dark *));
 
+<<<<<<< HEAD
+=======
+/* Safe-area insets (Android/iOS native shell) with 0 fallback for web */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html, body, #root {
+  min-height: 100dvh;
+}
+html, body {
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  overflow-x: hidden;
+}
+
+/* Mobile / APK polish
+ * - prevent iOS/Android auto-zoom on focus (needs >= 16px on inputs)
+ * - kill pull-to-refresh / rubber-band on the shell
+ * - improve touch feedback and disable text-selection on nav/buttons
+ */
+html {
+  overscroll-behavior-y: contain;
+  touch-action: manipulation;
+}
+
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+button, [role="button"], a, label {
+  -webkit-touch-callout: none;
+}
+
+/* Bigger, comfortable tap targets on touch devices */
+@media (pointer: coarse) {
+  button, [role="button"], a.btn, .tap {
+    min-height: 40px;
+  }
+}
+
+/* Small utility class to reserve room for the fixed bottom navigation */
+.pb-nav {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+
+/* Safe-area helpers */
+.safe-top { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 @theme inline {
   --font-sans: "Cairo", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
@@ -126,6 +185,7 @@
   * {
     border-color: var(--color-border);
   }
+<<<<<<< HEAD
   html, body {
     min-height: 100dvh;
     overflow-x: hidden;
@@ -135,6 +195,11 @@
     font-family: var(--font-sans);
     font-size: 12px; /* base مضغوط */
     background-color: var(--color-background);
+=======
+  html {
+    font-family: var(--font-sans);
+    font-size: 12px; /* base مضغوط */
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   }
   body {
     background-color: var(--color-background);
@@ -143,9 +208,12 @@
     font-size: 1rem; /* = 12px بسبب html */
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
+<<<<<<< HEAD
     /* Safe area horizontal fallback (top/bottom يتم إدارتها بواسطة الهيدر والشريط السفلي) */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+=======
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   }
   h1 { font-size: 1.5rem; line-height: 1.25; }
   h2 { font-size: 1.25rem; line-height: 1.3; }

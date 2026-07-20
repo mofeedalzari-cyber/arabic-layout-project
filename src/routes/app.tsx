@@ -19,7 +19,14 @@ function AppLayout() {
 
   if (loading || !user) {
     return (
+<<<<<<< HEAD
       <div className="flex min-h-dvh items-center justify-center bg-background">
+=======
+      <div
+        className="flex min-h-dvh items-center justify-center bg-background"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         <div className="rounded-3xl gradient-primary-bg p-5 shadow-glow animate-pulse">
           <Wifi className="h-10 w-10" />
         </div>
@@ -30,7 +37,15 @@ function AppLayout() {
   // Inactive agent gate
   if (role === "agent" && profile && !profile.is_active) {
     return (
+<<<<<<< HEAD
       <div className="min-h-dvh flex items-center justify-center bg-background px-4" dir="rtl">
+=======
+      <div
+        className="min-h-dvh flex items-center justify-center bg-background px-4"
+        dir="rtl"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         <div className="max-w-md text-center card-elegant p-8 fade-in">
           <div className="mx-auto rounded-2xl bg-warning/15 p-3 w-fit mb-4">
             <ShieldAlert className="h-8 w-8 text-warning" />
@@ -39,11 +54,31 @@ function AppLayout() {
           <p className="text-sm text-muted-foreground mb-6">
             حسابك قيد المراجعة. يرجى التواصل مع مدير النظام لتفعيله قبل البدء بالبيع.
           </p>
+<<<<<<< HEAD
           <Button variant="outline" className="rounded-xl" onClick={signOut}>تسجيل الخروج</Button>
+=======
+          <Button variant="outline" className="rounded-xl" onClick={signOut}>
+            تسجيل الخروج
+          </Button>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         </div>
       </div>
     );
   }
 
+<<<<<<< HEAD
   return <AppShell><Outlet /></AppShell>;
+=======
+  // ✅ الحالة الطبيعية: AppShell يغلف المحتوى، و AppShell نفسه يحتوي على padding-bottom
+  return (
+    <div
+      className="min-h-dvh flex flex-col"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </div>
+  );
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 }

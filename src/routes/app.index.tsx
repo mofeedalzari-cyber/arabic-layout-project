@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+// ============================================================
+// الملف الثاني: src/routes/app.index.tsx
+// ============================================================
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 import { createFileRoute } from "@tanstack/react-router";
 import { fmtMoney } from "@/lib/format";
 import { useAuth } from "@/lib/auth-context";
@@ -11,9 +18,16 @@ import type { LucideIcon } from "lucide-react";
 import { useUserNames } from "@/lib/use-user-names";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { exportToExcel, exportToPDF, type TableSection, type SummaryRow } from "@/lib/dashboard-export";
 import { AgentStats } from "./app.agents";
 import { MobileDataCard } from "@/components/mobile-data-card";
+=======
+import { exportToExcel, buildPDFHTML, type TableSection, type SummaryRow } from "@/lib/dashboard-export";
+import { AgentStats } from "./app.agents";
+import { MobileDataCard } from "@/components/mobile-data-card";
+import { Browser } from '@capacitor/browser';
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 
 export const Route = createFileRoute("/app/")({ component: DashboardPage });
 
@@ -65,8 +79,14 @@ function AdminDashboard() {
   });
 
   return (
+<<<<<<< HEAD
     <div className="w-full max-w-full overflow-hidden">
       <PageHeader title="لوحة التحكم" description="نظرة شاملة على أداء المتجر" />
+=======
+    <div className="w-full max-w-full overflow-hidden px-2 sm:px-4">
+      <PageHeader title="لوحة التحكم" description="نظرة شاملة على أداء المتجر" />
+      {/* البطاقات الإحصائية */}
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 mb-5">
         <StatCard icon={Package} label="إجمالي الكروت" value={stats?.total_cards ?? 0} tone="primary" />
         <StatCard icon={ShoppingCart} label="المتوفر" value={stats?.available ?? 0} tone="success" />
@@ -78,6 +98,10 @@ function AdminDashboard() {
         <StatCard icon={TrendingUp} label="قيمة المتوفر" value={fmtMoney(stats?.available_value ?? 0)} />
       </div>
 
+<<<<<<< HEAD
+=======
+      {/* أحدث المبيعات + أفضل الوكلاء */}
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
           <div className="flex items-center justify-between mb-4 gap-2">
@@ -248,20 +272,45 @@ function AdminBreakdowns() {
     return { summary: sumRows, sections };
   };
 
+<<<<<<< HEAD
+=======
+  // دالة مساعدة لفتح PDF في متصفح النظام (خاص بـ Android/Capacitor)
+  const openPDFInBrowser = (title: string, summary: SummaryRow[], sections: TableSection[]) => {
+    const html = buildPDFHTML(title, summary, sections);
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    Browser.open({ url, toolbarColor: "#009688" });
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  };
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   const handleExcel = () => {
     const { summary: s, sections } = buildExportData();
     const stamp = new Date().toISOString().slice(0, 10);
     exportToExcel(`لوحة-التحكم-${stamp}`, s, sections);
   };
+<<<<<<< HEAD
   const handlePDF = () => {
     const { summary: s, sections } = buildExportData();
     exportToPDF("لوحة التحكم — تقرير شامل", s, sections);
+=======
+
+  const handlePDF = () => {
+    const { summary: s, sections } = buildExportData();
+    openPDFInBrowser("لوحة التحكم — تقرير شامل", s, sections);
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
   };
 
   return (
     <div className="grid gap-4 md:gap-6 mt-5 w-full max-w-full">
+<<<<<<< HEAD
       <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+=======
+      {/* ملخص الشبكة */}
+      <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
           <div className="flex items-center gap-2 min-w-0">
             <Activity className="h-4 w-4 text-primary shrink-0" />
             <h3 className="font-bold text-sm sm:text-base">ملخص الشبكة</h3>
@@ -287,8 +336,14 @@ function AdminBreakdowns() {
         </div>
       </Card>
 
+<<<<<<< HEAD
       <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+=======
+      {/* إحصائيات المبيعات حسب الفئات */}
+      <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
           <div className="flex items-center gap-2 min-w-0">
             <Layers className="h-4 w-4 text-primary shrink-0" />
             <h3 className="font-bold text-sm sm:text-base">إحصائيات المبيعات حسب الفئات</h3>
@@ -308,6 +363,7 @@ function AdminBreakdowns() {
               ]);
               rows.push(["الإجمالي", "", totalCards, totalSold, totalRemaining, fmtMoney(totalValue)]);
               const stamp = new Date().toISOString().slice(0, 10);
+<<<<<<< HEAD
               exportToPDF(
                 `إحصائيات المبيعات حسب الفئات — ${stamp}`,
                 [],
@@ -317,6 +373,15 @@ function AdminBreakdowns() {
                   rows,
                 }],
               );
+=======
+              const summaryData: SummaryRow[] = [];
+              const sectionsData: TableSection[] = [{
+                title: "إحصائيات المبيعات حسب الفئات",
+                cols: ["الشبكة", "الفئة", "إجمالي الكروت", "مباعة", "متبقية", "إجمالي القيمة"],
+                rows,
+              }];
+              openPDFInBrowser(`إحصائيات المبيعات حسب الفئات — ${stamp}`, summaryData, sectionsData);
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
             }}
           >
             <FileText className="h-3.5 w-3.5" />
@@ -373,9 +438,16 @@ function AdminBreakdowns() {
         </div>
       </Card>
 
+<<<<<<< HEAD
       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+=======
+      {/* إحصائيات المناديب + المناديب المرتبطين */}
+      <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+        <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
             <div className="flex items-center gap-2 min-w-0">
               <UserCheck className="h-4 w-4 text-primary shrink-0" />
               <h3 className="font-bold text-sm sm:text-base">إحصائيات المناديب</h3>
@@ -402,6 +474,7 @@ function AdminBreakdowns() {
                   { label: "إجمالي ديون المناديب", value: fmtMoney(summary.debts) },
                 ];
                 const stamp = new Date().toISOString().slice(0, 10);
+<<<<<<< HEAD
                 exportToPDF(
                   `إحصائيات المناديب — ${stamp}`,
                   sumRows,
@@ -411,6 +484,14 @@ function AdminBreakdowns() {
                     rows,
                   }],
                 );
+=======
+                const sectionsData: TableSection[] = [{
+                  title: "إحصائيات المناديب",
+                  cols: ["المندوب", "الهاتف", "الفئة", "القيمة الاسمية", "العملة", "المسحوبة"],
+                  rows,
+                }];
+                openPDFInBrowser(`إحصائيات المناديب — ${stamp}`, sumRows, sectionsData);
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
               }}
             >
               <FileText className="h-3.5 w-3.5" />
@@ -532,7 +613,11 @@ function SummaryItem({ label, value, tone }: { label: string; value: string; ton
     : "text-foreground";
   return (
     <div className="rounded-xl bg-muted/40 p-2.5 sm:p-3 min-w-0">
+<<<<<<< HEAD
       <div className="text-[11px] text-muted-foreground mb-1 [overflow-wrap:anywhere]">{label}</div>
+=======
+      <div className="text-xs text-muted-foreground mb-1 [overflow-wrap:anywhere]">{label}</div>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       <div className={`text-sm sm:text-base font-bold ${toneClass} [overflow-wrap:anywhere]`}>{value}</div>
     </div>
   );
@@ -552,8 +637,12 @@ function AgentHome({ name }: { name: string }) {
   });
 
   return (
+<<<<<<< HEAD
     <div dir="rtl" className="w-full max-w-full overflow-hidden text-right">
 
+=======
+    <div dir="rtl" className="w-full max-w-full overflow-hidden text-right px-2 sm:px-4">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       <PageHeader title={`أهلاً، ${name}`} description="لوحة إحصائياتك واختيار الشبكات" />
 
       {user && (
@@ -605,6 +694,7 @@ function StatCard({ icon: Icon, label, value, tone }: { icon: LucideIcon; label:
     : tone === "primary" ? "bg-primary/15 text-primary"
     : "bg-muted text-muted-foreground";
   return (
+<<<<<<< HEAD
     <Card className="card-elegant border-0 p-3 sm:p-4 slide-up w-full max-w-full">
       <div className="flex items-start gap-2 sm:gap-3">
         <div className={`rounded-xl p-2 sm:p-2.5 shrink-0 ${toneClass}`}>
@@ -613,6 +703,16 @@ function StatCard({ icon: Icon, label, value, tone }: { icon: LucideIcon; label:
         <div className="min-w-0 flex-1">
           <div className="text-[11px] text-muted-foreground leading-tight [overflow-wrap:anywhere]">{label}</div>
           <div className="text-base sm:text-lg font-bold [overflow-wrap:anywhere] leading-tight mt-1">{value}</div>
+=======
+    <Card className="card-elegant border-0 p-2.5 sm:p-4 slide-up w-full max-w-full">
+      <div className="flex items-start gap-2 sm:gap-3">
+        <div className={`rounded-xl p-2 sm:p-2.5 shrink-0 ${toneClass}`}>
+          <Icon className="h-4 w-4 sm:h-4 sm:w-4" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-xs sm:text-sm text-muted-foreground leading-tight [overflow-wrap:anywhere]">{label}</div>
+          <div className="text-base sm:text-lg font-bold [overflow-wrap:anywhere] leading-tight mt-0.5">{value}</div>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         </div>
       </div>
     </Card>

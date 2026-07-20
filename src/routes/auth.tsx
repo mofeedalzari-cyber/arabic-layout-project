@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
+<<<<<<< HEAD
 import { Eye, EyeOff, ChevronLeft, User as UserIcon } from "lucide-react";
+=======
+import { Eye, EyeOff, Bike, Network, ChevronLeft, User as UserIcon, Mail, Phone, MessageCircle } from "lucide-react";
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 import logo from "@/assets/wifi-store-logo.png";
 
 export const Route = createFileRoute("/auth")({ component: AuthPage });
@@ -99,6 +103,7 @@ function AuthPage() {
   return (
     <div
       dir="rtl"
+<<<<<<< HEAD
       className="min-h-dvh bg-gradient-to-b from-[#eaf7ef] to-[#d7f0e2] flex flex-col overflow-x-hidden"
       style={{
         paddingTop: "max(1rem, env(safe-area-inset-top))",
@@ -112,6 +117,28 @@ function AuthPage() {
             <BrandHeader subtitle="قم بتسجيل الدخول" />
 
             <form onSubmit={handleLogin} className="space-y-3.5 mt-2">
+=======
+      className="min-h-dvh bg-[#eaf7ef] px-4 flex items-start justify-center"
+      style={{
+        paddingTop: "calc(1.5rem + env(safe-area-inset-top))",
+        paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))",
+        paddingLeft: "max(1rem, env(safe-area-inset-left))",
+        paddingRight: "max(1rem, env(safe-area-inset-right))",
+      }}
+    >
+      <div className="w-full max-w-md">
+        {mode === "login" ? (
+          <div className="bg-white rounded-[28px] shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] p-6 pb-8">
+            <BrandHeader subtitle="قم بتسجيل الدخول." />
+
+
+
+
+
+
+
+            <form onSubmit={handleLogin} className="space-y-3">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
               <SoftInput dir="rtl" value={loginPhone} onChange={(e) => setLoginPhone(e.target.value)} placeholder="رقم الجوال" inputMode="tel" autoComplete="tel" />
               <div className="relative">
                 <SoftInput dir="rtl" type={showPwd ? "text" : "password"} value={loginP} onChange={(e) => setLoginP(e.target.value)} placeholder="كلمة المرور" autoComplete="current-password" className="pl-11" />
@@ -120,6 +147,7 @@ function AuthPage() {
                 </button>
               </div>
 
+<<<<<<< HEAD
               <div className="text-left -mt-1">
                 <button type="button" className="text-teal-700 text-sm font-medium hover:underline">هل نسيت كلمة المرور؟</button>
               </div>
@@ -129,11 +157,19 @@ function AuthPage() {
                 disabled={busy}
                 className="w-full h-14 rounded-2xl bg-[#22a06b] hover:bg-[#1c8a5b] active:scale-[0.99] text-white text-lg font-bold shadow-[0_8px_20px_-8px_rgba(34,160,107,0.6)] transition"
               >
+=======
+              <div className="text-left">
+                <button type="button" className="text-teal-700 text-sm font-medium hover:underline">هل نسيت كلمة المرور؟</button>
+              </div>
+
+              <Button type="submit" disabled={busy} className="w-full h-14 rounded-2xl bg-[#22a06b] hover:bg-[#1c8a5b] text-white text-lg font-bold shadow-none">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
                 {busy ? "…" : "تسجيل الدخول"}
               </Button>
             </form>
 
             <p className="mt-5 text-center text-sm text-gray-700">
+<<<<<<< HEAD
               لا تملك حساب؟{" "}
               <button onClick={() => setSheetOpen(true)} className="text-teal-700 font-semibold underline underline-offset-4">
                 إنشاء حساب
@@ -162,6 +198,21 @@ function AuthPage() {
                 جميع الحقوق محفوظة © • برمجة وتصميم 💚{" "}
                 <span className="text-[#22a06b] font-bold">مفيد الزري</span>
               </p>
+=======
+              لا تملك حساب ؟{" "}
+              <button onClick={() => setSheetOpen(true)} className="text-teal-700 font-semibold underline underline-offset-4">
+                انقر هنا لإنشاء حساب
+              </button>
+            </p>
+
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <p className="text-center text-sm text-gray-700 mb-3">بحاجة لمساعدة؟ تواصل مع خدمة العملاء:</p>
+              <div className="flex items-center justify-center gap-3">
+                <ContactBtn><Mail className="h-5 w-5" /></ContactBtn>
+                <ContactBtn><Phone className="h-5 w-5" /></ContactBtn>
+                <ContactBtn><MessageCircle className="h-5 w-5" /></ContactBtn>
+              </div>
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
             </div>
           </div>
         ) : (
@@ -220,11 +271,16 @@ function AuthPage() {
             </p>
           </div>
         )}
+<<<<<<< HEAD
         </div>
       </div>
 
 
 
+=======
+      </div>
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       {/* Account type bottom sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="bottom" className="rounded-t-[28px] p-6 max-w-md mx-auto" dir="rtl">
@@ -292,6 +348,7 @@ function SoftInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   );
 }
 
+<<<<<<< HEAD
 function SocialBtn({ href, label, color, children }: { href: string; label: string; color: string; children: React.ReactNode }) {
   return (
     <a
@@ -333,6 +390,16 @@ function FacebookIcon() {
 }
 
 
+=======
+function ContactBtn({ children }: { children: React.ReactNode }) {
+  return (
+    <button type="button" className="h-11 w-11 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-gray-200">
+      {children}
+    </button>
+  );
+}
+
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
 function TypeRow({ icon, iconBg, title, desc, onClick }: { icon: React.ReactNode; iconBg: string; title: string; desc: string; onClick: () => void }) {
   return (
     <button type="button" onClick={onClick} className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 text-right">

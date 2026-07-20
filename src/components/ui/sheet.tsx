@@ -38,9 +38,15 @@ const sheetVariants = cva(
         top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
         bottom:
           "inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+<<<<<<< HEAD
         left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
         right:
           "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+=======
+        left: "left-0 top-[env(safe-area-inset-top)] bottom-[env(safe-area-inset-bottom)] h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom))] w-[80vw] max-w-[320px] border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
+        right:
+          "right-0 top-[env(safe-area-inset-top)] bottom-[env(safe-area-inset-bottom)] h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom))] w-[80vw] max-w-[320px] border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
       },
     },
     defaultVariants: {
@@ -61,11 +67,15 @@ const SheetContent = React.forwardRef<
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+<<<<<<< HEAD
       <SheetPrimitive.Close
         className="absolute right-4 rounded-sm opacity-70 ring-offset-background cursor-pointer transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
         style={{ top: "calc(1rem + env(safe-area-inset-top))" }}
       >
 
+=======
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background cursor-pointer transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+>>>>>>> 621c85ef577c36db50a8848189feb16dcfae6c8a
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
