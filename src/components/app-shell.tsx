@@ -41,7 +41,6 @@ export function AppShell({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", saved);
   }, []);
 
-  // Auto-close sidebars on route change
   useEffect(() => {
     setSidebarOpen(false);
     setMobileOpen(false);
@@ -55,7 +54,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-dvh flex bg-background" dir="rtl">
-      {/* Desktop sidebar (toggleable) */}
       {sidebarOpen && (
         <aside
           className="hidden lg:flex w-64 shrink-0 flex-col border-l bg-sidebar text-sidebar-foreground"
@@ -81,7 +79,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           }}
         >
           <div className="flex items-center gap-2">
-            {/* Desktop toggle */}
             <Button
               variant="ghost" size="icon" className="rounded-xl hidden lg:inline-flex"
               onClick={() => setSidebarOpen((v) => !v)}
@@ -89,7 +86,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <Menu className="h-5 w-5" />
             </Button>
-            {/* Mobile toggle */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-xl lg:hidden"><Menu className="h-5 w-5" /></Button>
@@ -127,27 +123,28 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Button>
         </header>
 
+        {/* المحتوى الرئيسي مع حشوة سفلية كبيرة لتجنب التداخل */}
         <main
           className="flex-1 p-3 md:p-4 lg:p-6 max-w-full"
           style={{
             paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
             paddingRight: "max(0.75rem, env(safe-area-inset-right))",
-            // 🔽 تقليل padding-bottom ليكون مناسباً مع القائمة السفلية + المسافة الآمنة
-            paddingBottom: "calc(4.5rem + env(safe-area-inset-bottom))",
+            // حشوة سفلية: 5rem (80px) + المسافة الآمنة + مسافة إضافية 0.5rem
+            paddingBottom: "calc(5.5rem + env(safe-area-inset-bottom))",
           }}
         >
           <div className="mx-auto max-w-6xl fade-in">{children}</div>
         </main>
 
-        {/* 🔽 Mobile bottom nav مع دعم safe-area-inset-bottom */}
+        {/* القائمة السفلية الثابتة مع حشوة سفلية إضافية */}
         <nav
           className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur"
           style={{
-            paddingBottom: "env(safe-area-inset-bottom)",
+            paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
             paddingLeft: "env(safe-area-inset-left)",
             paddingRight: "env(safe-area-inset-right)",
-            height: "calc(3.5rem + env(safe-area-inset-bottom))",
-            minHeight: "calc(3.5rem + env(safe-area-inset-bottom))",
+            height: "calc(4rem + env(safe-area-inset-bottom))",
+            minHeight: "calc(4rem + env(safe-area-inset-bottom))",
           }}
         >
           <div className="grid grid-cols-4 h-full">
