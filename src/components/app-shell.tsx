@@ -96,7 +96,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col"
+                style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
               >
                 <div style={{ paddingTop: "env(safe-area-inset-top)" }} className="shrink-0">
                   <BrandHeader />
@@ -131,22 +132,25 @@ export function AppShell({ children }: { children: ReactNode }) {
           style={{
             paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
             paddingRight: "max(0.75rem, env(safe-area-inset-right))",
-            paddingBottom: "calc(6rem + env(safe-area-inset-bottom))",
+            // 🔽 تقليل padding-bottom ليكون مناسباً مع القائمة السفلية + المسافة الآمنة
+            paddingBottom: "calc(4.5rem + env(safe-area-inset-bottom))",
           }}
         >
           <div className="mx-auto max-w-6xl fade-in">{children}</div>
         </main>
 
-        {/* Mobile bottom nav */}
+        {/* 🔽 Mobile bottom nav مع دعم safe-area-inset-bottom */}
         <nav
           className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur"
           style={{
             paddingBottom: "env(safe-area-inset-bottom)",
             paddingLeft: "env(safe-area-inset-left)",
             paddingRight: "env(safe-area-inset-right)",
+            height: "calc(3.5rem + env(safe-area-inset-bottom))",
+            minHeight: "calc(3.5rem + env(safe-area-inset-bottom))",
           }}
         >
-          <div className="grid grid-cols-4 h-14 min-h-[3.5rem]">
+          <div className="grid grid-cols-4 h-full">
             {items.slice(0, 4).map((it) => <BottomLink key={it.to} item={it} />)}
           </div>
         </nav>
