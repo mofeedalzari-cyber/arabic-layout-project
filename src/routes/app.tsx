@@ -46,11 +46,23 @@ function AppLayout() {
           <p className="text-sm text-muted-foreground mb-6">
             حسابك قيد المراجعة. يرجى التواصل مع مدير النظام لتفعيله قبل البدء بالبيع.
           </p>
-          <Button variant="outline" className="rounded-xl" onClick={signOut}>تسجيل الخروج</Button>
+          <Button variant="outline" className="rounded-xl" onClick={signOut}>
+            تسجيل الخروج
+          </Button>
         </div>
       </div>
     );
   }
 
-  return <AppShell><Outlet /></AppShell>;
+  // ✅ الحالة الطبيعية: AppShell يغلف المحتوى، و AppShell نفسه يحتوي على padding-bottom
+  return (
+    <div
+      className="min-h-dvh flex flex-col"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </div>
+  );
 }
