@@ -6,12 +6,14 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.mofeed.wificards",
   appName: "متجر كروت الواي فاي",
-  webDir: "www",
-  // ملاحظة: لا تضع server.url هنا — سيؤدي إلى شاشة بيضاء عند بطء الخادم.
-  // بدلاً من ذلك www/index.html يتولى فحص الاتصال والتوجيه الذكي.
+  
+  // 💡 تأكد أن هذا المجلد هو المجلد الفعلي الذي تتجمع فيه ملفاتك النهائية
+  webDir: "www", 
+
   server: {
     androidScheme: "https",
-    cleartext: false,
+    // تم تفعيلها لضمان عدم حظر أي طلبات HTTP فرعية أثناء فحص الاتصال بالشبكة
+    cleartext: true, 
     allowNavigation: [
       "arabic-layout-project.onrender.com",
       "*.onrender.com",
@@ -20,9 +22,10 @@ const config: CapacitorConfig = {
     ],
   },
   android: {
-    allowMixedContent: false,
+    allowMixedContent: true, // للسماح بتحميل الصور أو السكريبتات المختلطة إن وجدت
     backgroundColor: "#009688",
-    webContentsDebuggingEnabled: false,
+    // 🛠️ يمكنك تحويلها لـ true إذا كنت بحاجة لفحص الـ WebView عبر متصفح الكروم بالكمبيوتر أثناء التطوير
+    webContentsDebuggingEnabled: false, 
   },
   plugins: {
     SplashScreen: {
@@ -39,7 +42,8 @@ const config: CapacitorConfig = {
     StatusBar: {
       backgroundColor: "#009688",
       style: "LIGHT",
-      // Edge-to-edge — WebView يمتد خلف شريط الحالة، ونستخدم safe-area-insets داخل CSS
+      // ممتاز جداً! تفعيل هذا الخيار يجعل التصميم يتداخل مع الحواف (Edge-to-edge) 
+      // ويتوافق تماماً مع حزمة safe-area-fix التي تعمل عليها بالـ CSS
       overlaysWebView: true,
     },
     App: {
