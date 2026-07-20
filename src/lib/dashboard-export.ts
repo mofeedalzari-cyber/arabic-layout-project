@@ -70,7 +70,16 @@ export function exportToPDF(title: string, summary: SummaryRow[], sections: Tabl
   th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: right; }
   th { background: #f0f0f0; font-weight: 700; }
   tbody tr:nth-child(even) td { background: #fafafa; }
-  @media print { body { margin: 12mm; } h2 { page-break-after: avoid; } tr { page-break-inside: avoid; } }
+  .actions { margin-top: 20px; display: flex; gap: 12px; justify-content: center; }
+  .actions button { padding: 8px 24px; border-radius: 8px; border: none; font-size: 14px; cursor: pointer; }
+  .btn-print { background: #009688; color: #fff; }
+  .btn-close { background: #eee; color: #333; border: 1px solid #ccc; }
+  @media print {
+    .actions { display: none; }
+    body { margin: 12mm; }
+    h2 { page-break-after: avoid; }
+    tr { page-break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -79,11 +88,30 @@ export function exportToPDF(title: string, summary: SummaryRow[], sections: Tabl
   <h2>الملخص</h2>
   ${summaryHtml}
   ${sectionsHtml}
-  <script>window.addEventListener('load', () => setTimeout(() => window.print(), 300));</script>
+  <div class="actions">
+    <button class="btn-print" onclick="window.print()">🖨️ طباعة</button>
+    <button class="btn-close" onclick="window.close()">✖ إغلاق</button>
+  </div>
+  <script>
+    // طباعة تلقائية بعد تحميل النافذة مباشرة (مع تأخير صغير)
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        window.print();
+      }, 500);
+    });
+    // إغلاق النافذة بعد الطباعة (في حال تمت)
+    window.onafterprint = function() {
+      // إعطاء المستخدم خيار الإغلاق أو يمكن إغلاق تلقائي بعد 3 ثوانٍ
+      // لكننا نفضل ترك المستخدم يغلق يدوياً لأن بعض المتصفحات تمنع الإغلاق التلقائي
+      // فقط ننبه المستخدم
+      console.log("تمت الطباعة، يمكنك إغلاق النافذة.");
+    };
+  </script>
 </body>
 </html>`;
 
-  const w = window.open("", "_blank");
+  // فتح النافذة الجديدة مع خصائص مناسبة
+  const w = window.open("", "_blank", "width=800,height=700,scrollbars=yes,menubar=no,location=no,status=no");
   if (!w) {
     alert("يرجى السماح بالنوافذ المنبثقة لتصدير PDF");
     return;
@@ -91,4 +119,7 @@ export function exportToPDF(title: string, summary: SummaryRow[], sections: Tabl
   w.document.open();
   w.document.write(html);
   w.document.close();
+
+  // محاولة تركيز النافذة واستدعاء الطباعة (لكن سيتم عبر onload)
+  w.focus();
 }
