@@ -341,7 +341,7 @@ function esc(v: unknown) {
   return String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
 }
 
-function printAgentReport(a: PrintArgs) {
+async function printAgentReport(a: PrintArgs) {
   const now = new Date().toLocaleString("ar-EG", { dateStyle: "medium", timeStyle: "short" });
 
 
@@ -636,33 +636,10 @@ function printAgentReport(a: PrintArgs) {
 <script>window.onload = () => { setTimeout(() => window.print(), 350); };</script>
 </body></html>`;
 
-  const w = window.open("", "_blank");
-  if (w) {
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-    return;
-  }
-  // Fallback: بعض المتصفحات/WebView تمنع النوافذ المنبثقة — نستخدم iframe مخفي للطباعة
-  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const iframe = document.createElement("iframe");
-  iframe.style.position = "fixed";
-  iframe.style.right = "0";
-  iframe.style.bottom = "0";
-  iframe.style.width = "0";
-  iframe.style.height = "0";
-  iframe.style.border = "0";
-  iframe.src = url;
-  iframe.onload = () => {
-    try {
-      iframe.contentWindow?.focus();
-      iframe.contentWindow?.print();
-    } catch (e) { console.error(e); }
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      iframe.remove();
-    }, 60_000);
-  };
-  document.body.appendChild(iframe);
+  const { sharePdfOrPrint } = await import("@/lib/native-pdf");
+  await sharePdfOrPrint({
+    html,
+    filename: `كشف_حساب_${a.agentLabel}`,
+    dialogTitle: "طباعة أو مشاركة كشف الحساب",
+  });
 }

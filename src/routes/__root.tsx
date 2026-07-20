@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -26,7 +27,7 @@ import { initOfflineQueueAutoSync } from "@/lib/offline-queue";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4" dir="rtl">
+    <div className="flex min-h-dvh items-center justify-center bg-background px-4" dir="rtl">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">الصفحة غير موجودة</h2>
@@ -54,7 +55,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4" dir="rtl">
+    <div className="flex min-h-dvh items-center justify-center bg-background px-4" dir="rtl">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           حدث خطأ ما
@@ -130,13 +131,19 @@ function RootComponent() {
     initCapacitorNative(router);
   }, [router]);
 
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const inApp = pathname.startsWith("/app");
+  const isAuth = pathname.startsWith("/auth");
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className="flex min-h-dvh flex-col">
+        <div className="flex min-h-dvh flex-col overflow-x-hidden">
           <OfflineBanner />
-          <Outlet />
-          <SiteFooter />
+          <div className="flex-1 flex flex-col min-w-0">
+            <Outlet />
+          </div>
+          {!inApp && !isAuth && <SiteFooter />}
         </div>
 
         <Toaster position="top-center" richColors closeButton />

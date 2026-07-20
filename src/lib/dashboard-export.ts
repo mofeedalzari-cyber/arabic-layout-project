@@ -83,12 +83,7 @@ export function exportToPDF(title: string, summary: SummaryRow[], sections: Tabl
 </body>
 </html>`;
 
-  const w = window.open("", "_blank");
-  if (!w) {
-    alert("يرجى السماح بالنوافذ المنبثقة لتصدير PDF");
-    return;
-  }
-  w.document.open();
-  w.document.write(html);
-  w.document.close();
+  void import("./native-pdf").then(({ sharePdfOrPrint }) =>
+    sharePdfOrPrint({ html, filename: title, dialogTitle: "مشاركة أو طباعة التقرير" }),
+  );
 }

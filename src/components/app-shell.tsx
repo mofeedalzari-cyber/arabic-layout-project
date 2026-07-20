@@ -1,7 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Wifi, Package, Upload, Users, Receipt,
@@ -54,7 +55,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-dvh flex bg-background" dir="rtl">
+    <div className="min-h-dvh flex bg-background w-full max-w-full overflow-x-hidden" dir="rtl">
+
       {/* Desktop sidebar (toggleable) */}
       {sidebarOpen && (
         <aside
@@ -69,17 +71,17 @@ export function AppShell({ children }: { children: ReactNode }) {
         </aside>
       )}
 
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
+      <div className="flex-1 flex flex-col min-w-0 max-w-full">
+        {/* Top bar — يمتد خلف شريط الحالة على أندرويد ويستخدم safe-area-inset-top */}
         <header
-          className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b flex items-center justify-between px-4"
+          className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b flex items-center justify-between"
           style={{
-            paddingTop: "env(safe-area-inset-top)",
+            paddingTop: "calc(env(safe-area-inset-top) + 12px)",
             paddingLeft: "max(1rem, env(safe-area-inset-left))",
             paddingRight: "max(1rem, env(safe-area-inset-right))",
-            minHeight: "calc(3.5rem + env(safe-area-inset-top))",
           }}
         >
+          <div className="flex w-full items-center justify-between h-14">
           <div className="flex items-center gap-2">
             {/* Desktop toggle */}
             <Button
@@ -92,19 +94,25 @@ export function AppShell({ children }: { children: ReactNode }) {
             {/* Mobile toggle */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-xl lg:hidden"><Menu className="h-5 w-5" /></Button>
+                <Button variant="ghost" size="icon" className="rounded-xl lg:hidden" aria-label="القائمة"><Menu className="h-5 w-5" /></Button>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+                className="w-[85vw] max-w-sm p-0 bg-sidebar text-sidebar-foreground flex flex-col h-dvh"
+                style={{
+                  paddingTop: "calc(env(safe-area-inset-top) + 12px)",
+                  paddingRight: "env(safe-area-inset-right)",
+                }}
               >
-                <div style={{ paddingTop: "env(safe-area-inset-top)" }} className="shrink-0">
-                  <BrandHeader />
-                </div>
+                <VisuallyHidden>
+                  <SheetTitle>القائمة الجانبية</SheetTitle>
+                  <SheetDescription>روابط التنقل الرئيسية في التطبيق</SheetDescription>
+                </VisuallyHidden>
+                <BrandHeader />
                 <nav className="flex-1 min-h-0 overflow-y-auto p-3 space-y-1">
                   {items.map((it) => <NavLink key={it.to} item={it} />)}
                 </nav>
-                <div className="shrink-0" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+                <div className="shrink-0" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}>
                   <UserFooter username={profile?.username ?? ""} role={role} onSignOut={signOut} dark={dark} onToggleTheme={toggleTheme} />
                 </div>
               </SheetContent>
@@ -112,11 +120,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <div className="flex items-center gap-2 font-bold">
             <div className="rounded-xl gradient-primary-bg p-1.5"><Wifi className="h-4 w-4" /></div>
-            <span>كروت الواي فاي</span>
+            <span className="truncate">كروت الواي فاي</span>
           </div>
-          <Button variant="ghost" size="icon" className="rounded-xl" onClick={toggleTheme}>
+          <Button variant="ghost" size="icon" className="rounded-xl" onClick={toggleTheme} aria-label="تبديل الوضع">
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
+          </div>
         </header>
 
         <main
@@ -124,17 +133,17 @@ export function AppShell({ children }: { children: ReactNode }) {
           style={{
             paddingLeft: "max(0.75rem, env(safe-area-inset-left))",
             paddingRight: "max(0.75rem, env(safe-area-inset-right))",
-            paddingBottom: "calc(6rem + env(safe-area-inset-bottom))",
+            paddingBottom: "calc(6rem + env(safe-area-inset-bottom) + 20px)",
           }}
         >
           <div className="mx-auto max-w-6xl fade-in">{children}</div>
         </main>
 
-        {/* Mobile bottom nav */}
+        {/* Mobile bottom nav — فوق شريط التنقل الخاص بالنظام */}
         <nav
-          className="lg:hidden fixed bottom-0 inset-x-0 z-40 border-t bg-background/95 backdrop-blur"
+          className="lg:hidden fixed inset-x-0 z-40 border-t bg-background/95 backdrop-blur rounded-t-2xl shadow-lg"
           style={{
-            paddingBottom: "env(safe-area-inset-bottom)",
+            bottom: "calc(env(safe-area-inset-bottom) + 12px)",
             paddingLeft: "env(safe-area-inset-left)",
             paddingRight: "env(safe-area-inset-right)",
           }}
@@ -143,6 +152,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {items.slice(0, 4).map((it) => <BottomLink key={it.to} item={it} />)}
           </div>
         </nav>
+
       </div>
     </div>
   );

@@ -39,11 +39,11 @@ export async function initCapacitorNative(router: Router<any, any>) {
     const { StatusBar, Style } = await import("@capacitor/status-bar");
     const { App } = await import("@capacitor/app");
 
-    // Status bar
+    // Status bar — edge-to-edge with safe-area insets
     try {
-      await StatusBar.setOverlaysWebView({ overlay: false });
-      await StatusBar.setBackgroundColor({ color: "#009688" });
-      await StatusBar.setStyle({ style: Style.Light });
+      await StatusBar.setOverlaysWebView({ overlay: true });
+      await StatusBar.setBackgroundColor({ color: "#00968800" });
+      await StatusBar.setStyle({ style: Style.Dark });
     } catch {}
 
     // Hide splash after the app is ready

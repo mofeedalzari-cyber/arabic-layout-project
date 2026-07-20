@@ -87,13 +87,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(() => ({
     user, session, profile, role, loading,
     signOut: async () => {
-      try { await supabase.auth.signOut(); } catch (e) { console.error(e); }
+      // Clear local state first so UI updates immediately
       setSession(null);
       setUser(null);
       setProfile(null);
       setRole(null);
+      try {
+        await supabase.auth.signOut({ scope: "local" });
+      } catch (e) {
+        console.error("[auth] signOut failed", e);
+      }
+      // Purge any stale supabase tokens from storage (belt & suspenders for WebView)
       if (typeof window !== "undefined") {
-        window.location.replace("/auth");
+        try {
+          Object.keys(window.localStorage)
+            .filter((k) => k.startsWith("sb-") || k.includes("supabase"))
+            .forEach((k) => window.localStorage.removeItem(k));
+        } catch {}
+        // Hard reload to /auth so no cached protected state remains
+        window.location.href = "/auth";
       }
     },
     refresh: async () => { if (user) await loadProfile(user.id); },

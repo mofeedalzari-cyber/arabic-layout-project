@@ -1,4 +1,4 @@
-import { MessageCircle, Music2, Facebook, Heart } from "lucide-react";
+import { MessageCircle, Music2, Facebook } from "lucide-react";
 
 const WHATSAPP = "967778492884";
 const TIKTOK = "https://www.tiktok.com/@mufeed_saleh_ali_alzree?_r=1&_t=ZS-985kXzSNgqi";
@@ -9,6 +9,11 @@ export function SiteFooter() {
     <footer
       dir="rtl"
       className="relative overflow-hidden border-t border-border/60 bg-gradient-to-br from-background via-background to-primary/5"
+      style={{
+        paddingBottom: "env(safe-area-inset-bottom)",
+        paddingLeft: "env(safe-area-inset-left)",
+        paddingRight: "env(safe-area-inset-right)",
+      }}
     >
       {/* Glow accents */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
@@ -17,16 +22,15 @@ export function SiteFooter() {
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-5 sm:py-6">
         {/* Copyright */}
-        <p className="flex flex-wrap items-center justify-center gap-1.5 text-center text-xs font-medium text-muted-foreground sm:text-sm">
-          <span>© جميع الحقوق محفوظة</span>
-          <span className="text-muted-foreground/60">•</span>
-          <span className="inline-flex items-center gap-1">
-            برمجة وتصميم
-            <Heart className="h-3 w-3 fill-primary text-primary" aria-hidden />
-          </span>
-          <span className="bg-gradient-to-l from-primary to-primary/70 bg-clip-text font-bold text-transparent">
-            مفيد الزري
-          </span>
+        <p className="text-center text-xs font-semibold text-foreground sm:text-sm">
+          جميع الحقوق محفوظة
+        </p>
+
+        <div className="h-px w-12 bg-border/60" />
+
+        {/* Credits */}
+        <p className="text-center text-xs font-medium text-muted-foreground sm:text-sm">
+          برمجة وتصميم <span className="font-semibold text-foreground">مفيد الزري</span>
         </p>
 
         {/* Social links */}

@@ -394,9 +394,26 @@ function SaleReceipt({ sale }: { sale: any }) {
       </div>
       <div className="grid grid-cols-2 gap-2">
         <Button variant="outline" className="rounded-xl" onClick={() => copy(fullText, "البيانات")}><Copy className="h-4 w-4 ml-1" />نسخ</Button>
-        <Button variant="outline" className="rounded-xl" onClick={() => navigator.share ? navigator.share({ text: fullText }) : copy(fullText, "البيانات")}><Share2 className="h-4 w-4 ml-1" />مشاركة</Button>
-        <Button variant="outline" className="rounded-xl" onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(fullText)}`, "_blank")}><MessageCircle className="h-4 w-4 ml-1" />واتساب</Button>
-        <Button variant="outline" className="rounded-xl" onClick={() => window.print()}>طباعة</Button>
+        <Button variant="outline" className="rounded-xl" onClick={async () => {
+          const { isNativeApp } = await import("@/lib/native-pdf");
+          if (isNativeApp()) {
+            try { const { Share } = await import("@capacitor/share"); await Share.share({ text: fullText, dialogTitle: "مشاركة" }); return; } catch (e) { console.error(e); }
+          }
+          if (navigator.share) navigator.share({ text: fullText }); else copy(fullText, "البيانات");
+        }}><Share2 className="h-4 w-4 ml-1" />مشاركة</Button>
+        <Button variant="outline" className="rounded-xl" onClick={async () => {
+          const { isNativeApp } = await import("@/lib/native-pdf");
+          if (isNativeApp()) {
+            try { const { Share } = await import("@capacitor/share"); await Share.share({ text: fullText, dialogTitle: "إرسال عبر واتساب" }); return; } catch (e) { console.error(e); }
+          }
+          window.open(`https://wa.me/?text=${encodeURIComponent(fullText)}`, "_blank");
+        }}><MessageCircle className="h-4 w-4 ml-1" />واتساب</Button>
+        <Button variant="outline" className="rounded-xl" onClick={async () => {
+          const esc = (s: any) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+          const html = `<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>${esc(sale.transaction_no)}</title><style>body{font-family:Cairo,sans-serif;padding:20px;text-align:center;background:#fff}.b{border:2px dashed #009688;border-radius:12px;padding:16px;margin:12px auto;max-width:340px}h1{color:#009688;margin:0 0 8px}.k{color:#666;font-size:12px}.v{font-weight:bold;font-size:18px;margin-bottom:8px}</style></head><body><div class="b"><h1>${esc(sale.network_name)}</h1><div class="k">${esc(sale.package_name)}</div><hr/><div class="k">اسم المستخدم</div><div class="v">${esc(sale.card_username)}</div>${sale.card_password?`<div class="k">كلمة المرور</div><div class="v">${esc(sale.card_password)}</div>`:""}<div class="k">السعر</div><div class="v">${esc(fmtMoney(Number(sale.price)))}</div><div class="k" style="margin-top:8px">رقم العملية: ${esc(sale.transaction_no)}</div></div><script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;
+          const { sharePdfOrPrint } = await import("@/lib/native-pdf");
+          await sharePdfOrPrint({ html, filename: `فاتورة_${sale.transaction_no}`, dialogTitle: "طباعة أو مشاركة الفاتورة" });
+        }}>طباعة</Button>
       </div>
     </div>
   );

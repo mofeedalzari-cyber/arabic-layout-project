@@ -26,20 +26,21 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 1500,
-      launchAutoHide: true,
+      launchShowDuration: 2000,
+      launchAutoHide: false,
       backgroundColor: "#009688",
       androidSplashResourceName: "splash",
       androidScaleType: "CENTER_CROP",
       showSpinner: true,
       spinnerColor: "#ffffff",
-      splashFullScreen: false,
-      splashImmersive: false,
+      splashFullScreen: true,
+      splashImmersive: true,
     },
     StatusBar: {
       backgroundColor: "#009688",
       style: "LIGHT",
-      overlaysWebView: false,
+      // Edge-to-edge — WebView يمتد خلف شريط الحالة، ونستخدم safe-area-insets داخل CSS
+      overlaysWebView: true,
     },
     App: {
       launchUrl: "https://arabic-layout-project.onrender.com",

@@ -130,12 +130,8 @@ export function printCards(opts: {
 </body>
 </html>`;
 
-  const w = window.open("", "_blank");
-  if (!w) {
-    alert("يرجى السماح بالنوافذ المنبثقة للطباعة");
-    return;
-  }
-  w.document.open();
-  w.document.write(html);
-  w.document.close();
+  // Native → generate PDF + share sheet. Web → open print window.
+  void import("./native-pdf").then(({ sharePdfOrPrint }) =>
+    sharePdfOrPrint({ html, filename: title, dialogTitle: "طباعة أو مشاركة الكروت" }),
+  );
 }
