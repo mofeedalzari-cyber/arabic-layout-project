@@ -3,17 +3,20 @@ import * as XLSX from "xlsx";
 export type SummaryRow = { label: string; value: string | number };
 export type TableSection = { title: string; cols: string[]; rows: (string | number)[][] };
 
+/**
+ * تصدير البيانات إلى ملف Excel
+ */
 export function exportToExcel(fileName: string, summary: SummaryRow[], sections: TableSection[]) {
   const wb = XLSX.utils.book_new();
 
-  // Summary sheet
+  // ورقة الملخص
   const sumAoA: (string | number)[][] = [["البند", "القيمة"], ...summary.map((s) => [s.label, s.value])];
   const wsSum = XLSX.utils.aoa_to_sheet(sumAoA);
   wsSum["!cols"] = [{ wch: 28 }, { wch: 20 }];
   (wsSum as unknown as { "!rtl": boolean })["!rtl"] = true;
   XLSX.utils.book_append_sheet(wb, wsSum, "الملخص");
 
-  // Each section as its own sheet
+  // كل قسم في ورقة منفصلة
   sections.forEach((sec) => {
     const aoa: (string | number)[][] = [sec.cols, ...sec.rows];
     const ws = XLSX.utils.aoa_to_sheet(aoa);
@@ -26,19 +29,24 @@ export function exportToExcel(fileName: string, summary: SummaryRow[], sections:
   XLSX.writeFile(wb, `${fileName}.xlsx`);
 }
 
-export function exportToPDF(title: string, summary: SummaryRow[], sections: TableSection[]) {
+/**
+ * بناء HTML التقرير (بدون أزرار) لاستخدامه في المتصفح أو Capacitor Browser
+ */
+export function buildPDFHTML(title: string, summary: SummaryRow[], sections: TableSection[]): string {
   const esc = (v: string | number) =>
     String(v)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
 
+  // بناء جدول الملخص
   const summaryHtml = `
     <table>
       <thead><tr><th>البند</th><th>القيمة</th></tr></thead>
       <tbody>${summary.map((s) => `<tr><td>${esc(s.label)}</td><td>${esc(s.value)}</td></tr>`).join("")}</tbody>
     </table>`;
 
+  // بناء جداول الأقسام
   const sectionsHtml = sections
     .map(
       (sec) => `
@@ -55,71 +63,113 @@ export function exportToPDF(title: string, summary: SummaryRow[], sections: Tabl
     .join("");
 
   const date = new Date().toLocaleString("ar-SA");
-  const html = `<!doctype html>
+
+  return `<!doctype html>
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="utf-8" />
 <title>${esc(title)}</title>
 <style>
   * { box-sizing: border-box; }
-  body { font-family: -apple-system, "Segoe UI", "Tahoma", "Arial", sans-serif; color: #111; margin: 24px; }
-  h1 { font-size: 20px; margin: 0 0 4px; }
-  h2 { font-size: 15px; margin: 22px 0 8px; border-bottom: 2px solid #333; padding-bottom: 4px; }
-  .meta { color: #666; font-size: 12px; margin-bottom: 16px; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: right; }
-  th { background: #f0f0f0; font-weight: 700; }
-  tbody tr:nth-child(even) td { background: #fafafa; }
-  .actions { margin-top: 20px; display: flex; gap: 12px; justify-content: center; }
-  .actions button { padding: 8px 24px; border-radius: 8px; border: none; font-size: 14px; cursor: pointer; }
-  .btn-print { background: #009688; color: #fff; }
-  .btn-close { background: #eee; color: #333; border: 1px solid #ccc; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Tahoma", "Arial", sans-serif;
+    color: #111;
+    margin: 24px;
+    background: #fff;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+    color: #009688;
+  }
+  h2 {
+    font-size: 16px;
+    margin: 24px 0 10px;
+    border-bottom: 2px solid #009688;
+    padding-bottom: 6px;
+    color: #333;
+  }
+  .meta {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    text-align: right;
+  }
+  th {
+    background: #f5f5f5;
+    font-weight: 700;
+    color: #333;
+  }
+  tbody tr:nth-child(even) td {
+    background: #fafafa;
+  }
+  .footer-note {
+    margin-top: 32px;
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+  }
   @media print {
-    .actions { display: none; }
-    body { margin: 12mm; }
+    body { margin: 10mm; }
     h2 { page-break-after: avoid; }
     tr { page-break-inside: avoid; }
+    .footer-note { display: none; }
   }
 </style>
 </head>
 <body>
-  <h1>${esc(title)}</h1>
-  <div class="meta">تاريخ التصدير: ${esc(date)}</div>
-  <h2>الملخص</h2>
+  <h1>📄 ${esc(title)}</h1>
+  <div class="meta">📅 تاريخ التصدير: ${esc(date)}</div>
+  
+  <h2>📊 الملخص</h2>
   ${summaryHtml}
+  
   ${sectionsHtml}
-  <div class="actions">
-    <button class="btn-print" onclick="window.print()">🖨️ طباعة</button>
-    <button class="btn-close" onclick="window.close()">✖ إغلاق</button>
+  
+  <div class="footer-note">
+    — يمكنك الطباعة من قائمة المتصفح (Ctrl+P أو ⌘+P) —
   </div>
-  <script>
-    // طباعة تلقائية بعد تحميل النافذة مباشرة (مع تأخير صغير)
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        window.print();
-      }, 500);
-    });
-    // إغلاق النافذة بعد الطباعة (في حال تمت)
-    window.onafterprint = function() {
-      // إعطاء المستخدم خيار الإغلاق أو يمكن إغلاق تلقائي بعد 3 ثوانٍ
-      // لكننا نفضل ترك المستخدم يغلق يدوياً لأن بعض المتصفحات تمنع الإغلاق التلقائي
-      // فقط ننبه المستخدم
-      console.log("تمت الطباعة، يمكنك إغلاق النافذة.");
-    };
-  </script>
 </body>
 </html>`;
+}
 
-  // فتح النافذة الجديدة مع خصائص مناسبة
-  const w = window.open("", "_blank", "width=800,height=700,scrollbars=yes,menubar=no,location=no,status=no");
+/**
+ * تصدير PDF (لبيئة الويب) - تفتح نافذة جديدة وتعرض التقرير مع زر طباعة
+ * ملاحظة: في تطبيقات Android (Capacitor) يُفضل استخدام buildPDFHTML مع Browser.open()
+ */
+export function exportToPDF(title: string, summary: SummaryRow[], sections: TableSection[]) {
+  const html = buildPDFHTML(title, summary, sections);
+  
+  // محاولة فتح نافذة جديدة
+  const w = window.open("", "_blank", "width=900,height=750,scrollbars=yes,menubar=yes");
   if (!w) {
     alert("يرجى السماح بالنوافذ المنبثقة لتصدير PDF");
     return;
   }
+  
   w.document.open();
   w.document.write(html);
   w.document.close();
-
-  // محاولة تركيز النافذة واستدعاء الطباعة (لكن سيتم عبر onload)
   w.focus();
+  
+  // محاولة استدعاء الطباعة تلقائياً بعد تحميل المحتوى
+  w.onload = () => {
+    setTimeout(() => {
+      w.print();
+    }, 500);
+  };
 }
