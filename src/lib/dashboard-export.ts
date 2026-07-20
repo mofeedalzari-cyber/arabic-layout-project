@@ -1,3 +1,7 @@
+// ============================================================
+// الملف الأول: src/lib/dashboard-export.ts
+// ============================================================
+
 import * as XLSX from "xlsx";
 
 export type SummaryRow = { label: string; value: string | number };
@@ -31,6 +35,7 @@ export function exportToExcel(fileName: string, summary: SummaryRow[], sections:
 
 /**
  * بناء HTML التقرير (بدون أزرار) لاستخدامه في المتصفح أو Capacitor Browser
+ * مع إضافة طباعة تلقائية عند التحميل (في حال دعمها)
  */
 export function buildPDFHTML(title: string, summary: SummaryRow[], sections: TableSection[]): string {
   const esc = (v: string | number) =>
@@ -143,6 +148,17 @@ export function buildPDFHTML(title: string, summary: SummaryRow[], sections: Tab
   <div class="footer-note">
     — يمكنك الطباعة من قائمة المتصفح (Ctrl+P أو ⌘+P) —
   </div>
+
+  <script>
+    // محاولة الطباعة التلقائية عند تحميل الصفحة (تعمل في بعض المتصفحات)
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        if (window.print) {
+          window.print();
+        }
+      }, 600);
+    });
+  </script>
 </body>
 </html>`;
 }
