@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: internet-cards
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install && npm run build
+    startCommand: node .output/server/index.mjs
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+      # Set these in Render Dashboard → Environment:
+      # - VITE_SUPABASE_URL
+      # - VITE_SUPABASE_PUBLISHABLE_KEY
+      # - VITE_SUPABASE_PROJECT_ID
