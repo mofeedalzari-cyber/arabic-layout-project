@@ -65,8 +65,9 @@ function AdminDashboard() {
   });
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full max-w-full overflow-hidden px-2 sm:px-4">
       <PageHeader title="لوحة التحكم" description="نظرة شاملة على أداء المتجر" />
+      {/* البطاقات الإحصائية */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 mb-5">
         <StatCard icon={Package} label="إجمالي الكروت" value={stats?.total_cards ?? 0} tone="primary" />
         <StatCard icon={ShoppingCart} label="المتوفر" value={stats?.available ?? 0} tone="success" />
@@ -78,6 +79,7 @@ function AdminDashboard() {
         <StatCard icon={TrendingUp} label="قيمة المتوفر" value={fmtMoney(stats?.available_value ?? 0)} />
       </div>
 
+      {/* أحدث المبيعات + أفضل الوكلاء */}
       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
           <div className="flex items-center justify-between mb-4 gap-2">
@@ -260,8 +262,9 @@ function AdminBreakdowns() {
 
   return (
     <div className="grid gap-4 md:gap-6 mt-5 w-full max-w-full">
+      {/* ملخص الشبكة */}
       <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
           <div className="flex items-center gap-2 min-w-0">
             <Activity className="h-4 w-4 text-primary shrink-0" />
             <h3 className="font-bold text-sm sm:text-base">ملخص الشبكة</h3>
@@ -287,8 +290,9 @@ function AdminBreakdowns() {
         </div>
       </Card>
 
+      {/* إحصائيات المبيعات حسب الفئات */}
       <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
           <div className="flex items-center gap-2 min-w-0">
             <Layers className="h-4 w-4 text-primary shrink-0" />
             <h3 className="font-bold text-sm sm:text-base">إحصائيات المبيعات حسب الفئات</h3>
@@ -373,9 +377,10 @@ function AdminBreakdowns() {
         </div>
       </Card>
 
+      {/* إحصائيات المناديب + المناديب المرتبطين */}
       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Card className="card-elegant p-3 sm:p-5 border-0 w-full max-w-full">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <UserCheck className="h-4 w-4 text-primary shrink-0" />
               <h3 className="font-bold text-sm sm:text-base">إحصائيات المناديب</h3>
@@ -532,7 +537,7 @@ function SummaryItem({ label, value, tone }: { label: string; value: string; ton
     : "text-foreground";
   return (
     <div className="rounded-xl bg-muted/40 p-2.5 sm:p-3 min-w-0">
-      <div className="text-[11px] text-muted-foreground mb-1 [overflow-wrap:anywhere]">{label}</div>
+      <div className="text-xs text-muted-foreground mb-1 [overflow-wrap:anywhere]">{label}</div>
       <div className={`text-sm sm:text-base font-bold ${toneClass} [overflow-wrap:anywhere]`}>{value}</div>
     </div>
   );
@@ -552,8 +557,7 @@ function AgentHome({ name }: { name: string }) {
   });
 
   return (
-    <div dir="rtl" className="w-full max-w-full overflow-hidden text-right">
-
+    <div dir="rtl" className="w-full max-w-full overflow-hidden text-right px-2 sm:px-4">
       <PageHeader title={`أهلاً، ${name}`} description="لوحة إحصائياتك واختيار الشبكات" />
 
       {user && (
@@ -605,14 +609,14 @@ function StatCard({ icon: Icon, label, value, tone }: { icon: LucideIcon; label:
     : tone === "primary" ? "bg-primary/15 text-primary"
     : "bg-muted text-muted-foreground";
   return (
-    <Card className="card-elegant border-0 p-3 sm:p-4 slide-up w-full max-w-full">
+    <Card className="card-elegant border-0 p-2.5 sm:p-4 slide-up w-full max-w-full">
       <div className="flex items-start gap-2 sm:gap-3">
         <div className={`rounded-xl p-2 sm:p-2.5 shrink-0 ${toneClass}`}>
-          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <Icon className="h-4 w-4 sm:h-4 sm:w-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] text-muted-foreground leading-tight [overflow-wrap:anywhere]">{label}</div>
-          <div className="text-base sm:text-lg font-bold [overflow-wrap:anywhere] leading-tight mt-1">{value}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground leading-tight [overflow-wrap:anywhere]">{label}</div>
+          <div className="text-base sm:text-lg font-bold [overflow-wrap:anywhere] leading-tight mt-0.5">{value}</div>
         </div>
       </div>
     </Card>
