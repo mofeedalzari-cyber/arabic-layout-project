@@ -113,7 +113,8 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      {/* 🔽 إضافة padding-bottom آمنة للجسم */}
+      <body style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
         {children}
         <Scripts />
       </body>
@@ -138,7 +139,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className="flex min-h-dvh flex-col">
+        {/* 🔽 إضافة padding-bottom آمنة للحاوية الرئيسية */}
+        <div
+          className="flex min-h-dvh flex-col"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
           <OfflineBanner />
           <Outlet />
           {!inApp && <SiteFooter />}
@@ -149,4 +154,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
