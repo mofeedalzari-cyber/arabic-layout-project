@@ -1,3 +1,7 @@
+// ============================================================
+// الملف الثاني: src/routes/app.index.tsx
+// ============================================================
+
 import { createFileRoute } from "@tanstack/react-router";
 import { fmtMoney } from "@/lib/format";
 import { useAuth } from "@/lib/auth-context";
@@ -11,9 +15,10 @@ import type { LucideIcon } from "lucide-react";
 import { useUserNames } from "@/lib/use-user-names";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { exportToExcel, exportToPDF, type TableSection, type SummaryRow } from "@/lib/dashboard-export";
+import { exportToExcel, buildPDFHTML, type TableSection, type SummaryRow } from "@/lib/dashboard-export";
 import { AgentStats } from "./app.agents";
 import { MobileDataCard } from "@/components/mobile-data-card";
+import { Browser } from '@capacitor/browser';
 
 export const Route = createFileRoute("/app/")({ component: DashboardPage });
 
@@ -250,14 +255,24 @@ function AdminBreakdowns() {
     return { summary: sumRows, sections };
   };
 
+  // دالة مساعدة لفتح PDF في متصفح النظام (خاص بـ Android/Capacitor)
+  const openPDFInBrowser = (title: string, summary: SummaryRow[], sections: TableSection[]) => {
+    const html = buildPDFHTML(title, summary, sections);
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    Browser.open({ url, toolbarColor: "#009688" });
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  };
+
   const handleExcel = () => {
     const { summary: s, sections } = buildExportData();
     const stamp = new Date().toISOString().slice(0, 10);
     exportToExcel(`لوحة-التحكم-${stamp}`, s, sections);
   };
+
   const handlePDF = () => {
     const { summary: s, sections } = buildExportData();
-    exportToPDF("لوحة التحكم — تقرير شامل", s, sections);
+    openPDFInBrowser("لوحة التحكم — تقرير شامل", s, sections);
   };
 
   return (
@@ -312,15 +327,13 @@ function AdminBreakdowns() {
               ]);
               rows.push(["الإجمالي", "", totalCards, totalSold, totalRemaining, fmtMoney(totalValue)]);
               const stamp = new Date().toISOString().slice(0, 10);
-              exportToPDF(
-                `إحصائيات المبيعات حسب الفئات — ${stamp}`,
-                [],
-                [{
-                  title: "إحصائيات المبيعات حسب الفئات",
-                  cols: ["الشبكة", "الفئة", "إجمالي الكروت", "مباعة", "متبقية", "إجمالي القيمة"],
-                  rows,
-                }],
-              );
+              const summaryData: SummaryRow[] = [];
+              const sectionsData: TableSection[] = [{
+                title: "إحصائيات المبيعات حسب الفئات",
+                cols: ["الشبكة", "الفئة", "إجمالي الكروت", "مباعة", "متبقية", "إجمالي القيمة"],
+                rows,
+              }];
+              openPDFInBrowser(`إحصائيات المبيعات حسب الفئات — ${stamp}`, summaryData, sectionsData);
             }}
           >
             <FileText className="h-3.5 w-3.5" />
@@ -407,15 +420,12 @@ function AdminBreakdowns() {
                   { label: "إجمالي ديون المناديب", value: fmtMoney(summary.debts) },
                 ];
                 const stamp = new Date().toISOString().slice(0, 10);
-                exportToPDF(
-                  `إحصائيات المناديب — ${stamp}`,
-                  sumRows,
-                  [{
-                    title: "إحصائيات المناديب",
-                    cols: ["المندوب", "الهاتف", "الفئة", "القيمة الاسمية", "العملة", "المسحوبة"],
-                    rows,
-                  }],
-                );
+                const sectionsData: TableSection[] = [{
+                  title: "إحصائيات المناديب",
+                  cols: ["المندوب", "الهاتف", "الفئة", "القيمة الاسمية", "العملة", "المسحوبة"],
+                  rows,
+                }];
+                openPDFInBrowser(`إحصائيات المناديب — ${stamp}`, sumRows, sectionsData);
               }}
             >
               <FileText className="h-3.5 w-3.5" />
